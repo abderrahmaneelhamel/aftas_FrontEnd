@@ -17,7 +17,7 @@ export class CompetitionTableComponent implements OnInit {
   public competitionForm!: FormGroup;
   public competitionAddMemberForm!: FormGroup;
   public currentPage = 1;
-  public itemsPerPage = 2;
+  public itemsPerPage = 4;
   public totalMembers = 0;
   public members: Member[] = [];
 
@@ -172,8 +172,8 @@ formatTime(time: { hours?: number, minutes?: number } | string): string {
 
     this.competitionService.getAllCompetitions().subscribe(
       (competitions : any) => {
-        this.competitions = competitions.content.slice(startIndex, endIndex);
-        this.totalMembers = competitions.totalElements;
+        this.competitions = competitions.slice(startIndex, endIndex);
+        this.totalMembers = competitions.lenght;
       },
       (error) => {
         console.error(error);

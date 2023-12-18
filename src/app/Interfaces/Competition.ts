@@ -4,6 +4,7 @@ export interface Competition {
   id?: number;
   code: string;
   date: Date;
+  status?: string;
   startTime: string;
   endTime: string;
   numberOfParticipants: number;

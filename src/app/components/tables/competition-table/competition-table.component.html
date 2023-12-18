@@ -48,6 +48,7 @@
           <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">End Time</th>
           <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">Participants</th>
           <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">Location</th>
+          <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">status</th>
           <th class="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-blue-500 tracking-wider">Actions</th>
         </tr>
       </thead>
@@ -66,8 +67,9 @@
           <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{ competition.endTime }}</td>
           <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{ competition.numberOfParticipants }}</td>
           <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{ competition.location }}</td>
+          <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{ competition.status }}</td>
           <td class="px-6 py-4 flex justify-between text-right border-b border-gray-500 text-sm leading-5">
-            <app-popup class="mx-1" name="Show Podium" color="blue" title="The Podium">
+            <app-popup *ngIf="competition.status === 'finished'" class="mx-1" name="Show Podium" color="blue" title="The Podium">
               <app-podium [CompetitionId]="competition.id!"></app-podium>
             </app-popup>
             <!-- <button (click)="deleteCompetitionConfirmation(competition.id)"

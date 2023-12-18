@@ -24,36 +24,77 @@ export class AddHuntingComponent implements OnInit {
 
   public fishes: Fish[] = [];
 
-  constructor(private fb: FormBuilder, private competitionService: CompetitionService,private memberService: MemberService,private fishService: FishService, private router: Router) {}
+  constructor(private fb: FormBuilder, private competitionService: CompetitionService, private memberService: MemberService, private fishService: FishService, private router: Router) {}
 
 
   ngOnInit(): void {
     this.huntingForm = this.fb.group({
       competitionId: this.fb.control(null),
       memberId: this.fb.control(null),
-      fishId : this.fb.control(null),
+      fishId: this.fb.control(null),
+      weight: this.fb.control(null),
     });
     this.getCompetitions();
     this.getMembers();
     this.getFishes();
   }
 
-  onAddHunting(){
-    const { competitionId, memberId, fishId } = this.huntingForm.value;
-    this.competitionService.updatePointsForFishCaught({ memberId, competitionId, fishId}).subscribe()
-    Swal.fire({
-      title: 'Success!',
-      text: 'hunting added successfully.',
-      icon: 'success',
-      confirmButtonText: 'OK',
-    });
-    this.huntingForm.reset();
-    this.router.navigate(['/Dashboard']);
+  onAddHunting() {
+    const { competitionId, memberId, fishId, weight } = this.huntingForm.value;
+  
+    this.fishService.checkFishWeight(fishId, weight).subscribe(
+      (response: any) => {
+        console.log('Response:', response);
+  
+        if (response.includes('Accepted')) {
+  
+          this.competitionService.updatePointsForFishCaught({ memberId, competitionId, fishId }).subscribe(
+            () => {
+              Swal.fire({
+                title: 'Success!',
+                text: 'Hunting added successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+              });
+              this.huntingForm.reset();
+              this.router.navigate(['/Dashboard']);
+            },
+            (updateError) => {
+              console.error(updateError);
+              Swal.fire({
+                title: 'Success!',
+                text: 'Hunting added successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+              });
+            }
+          );
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Fish weight is below the average range. Please select another fish.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
+        }
+      },
+      (error) => {
+        console.error(error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to check fish weight.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+    );
   }
+  
+  
 
   getMembers() {
     this.memberService.getAllMembers().subscribe(
-      (members : any) => {
+      (members: any) => {
         this.members = members.content;
       },
       (error) => {
@@ -64,8 +105,8 @@ export class AddHuntingComponent implements OnInit {
 
   getCompetitions() {
     this.competitionService.getAllCompetitions().subscribe(
-      (competition : any) => {
-        this.competitions = competition.content;
+      (competition: any) => {
+        this.competitions = competition;
       },
       (error) => {
         console.error(error);
@@ -75,7 +116,7 @@ export class AddHuntingComponent implements OnInit {
 
   getFishes() {
     this.fishService.getAllfishes().subscribe(
-      (fish : any) => {
+      (fish: any) => {
         this.fishes = fish;
       },
       (error) => {
@@ -83,5 +124,4 @@ export class AddHuntingComponent implements OnInit {
       }
     );
   }
-
 }
