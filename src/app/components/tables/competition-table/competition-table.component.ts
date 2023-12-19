@@ -72,9 +72,6 @@ export class CompetitionTableComponent implements OnInit {
     const { competitionId, memberId } = this.competitionAddMemberForm.value;
     this.competitionService.registerMemberInCompetition({ memberId, competitionId }).subscribe(
       (competition) => {
-        console.log('====================================');
-        console.log(competition);
-        console.log('====================================');
         Swal.fire({
           title: 'Success!',
           text: 'Member added successfully.',
