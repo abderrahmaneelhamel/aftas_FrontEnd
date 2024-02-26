@@ -74,7 +74,7 @@
             </app-popup>
             <!-- <button (click)="deleteCompetitionConfirmation(competition.id)"
               class="px-5 py-2 border-red-500 border text-red-500 rounded transition duration-300 hover:bg-red-700 hover:text-white focus:outline-none">Delete</button> -->
-            <app-popup [isEditForm]="true" (populateUpdateForm)="populateAddMemberForm(competition)" name="Add Member" title="Add a member to competition" color="blue">
+            <app-popup *ngIf="!isMember" [isEditForm]="true" (populateUpdateForm)="populateAddMemberForm(competition)" name="Add Member" title="Add a member to competition" color="blue">
               <form [formGroup]="competitionAddMemberForm" class="p-4 md:p-5" (ngSubmit)="onAddMember()">
                 <div class="col-span-2 sm:col-span-1">
                   <label for="memberId" class="block mb-2 text-sm font-medium text-gray-900 ">Members</label>
